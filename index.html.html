@@ -1,0 +1,1733 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
+  />
+  <title>GN Systems Mobile</title>
+  <meta name="theme-color" content="#0f172a" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="GN Systems" />
+
+  <style>
+    :root {
+      --bg: #0b1120;
+      --bg-soft: #111827;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --primary: #2563eb;
+      --primary-2: #0ea5e9;
+      --success: #16a34a;
+      --warning: #d97706;
+      --danger: #dc2626;
+      --white: #ffffff;
+      --shadow: 0 10px 30px rgba(15, 23, 42, 0.10);
+      --radius: 20px;
+      --radius-sm: 14px;
+      --top-safe: env(safe-area-inset-top, 0px);
+      --bottom-safe: env(safe-area-inset-bottom, 0px);
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      min-height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background: #f8fafc;
+      color: var(--text);
+      overscroll-behavior: none;
+    }
+
+    body {
+      padding-top: var(--top-safe);
+      padding-bottom: var(--bottom-safe);
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    button, input, select {
+      font: inherit;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    #splash {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #020617, #0f172a, #1e293b);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      z-index: 99999;
+      transition: opacity 0.35s ease, visibility 0.35s ease;
+      padding: 24px;
+    }
+
+    #splash.hide {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .splash-logo-wrap {
+      width: 170px;
+      height: 170px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 18px;
+      animation: pulse 1.5s infinite ease-in-out;
+    }
+
+    .splash-logo-wrap img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    .splash-title {
+      color: #93c5fd;
+      font-size: 15px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.98); opacity: 0.7; }
+      50% { transform: scale(1); opacity: 1; }
+      100% { transform: scale(0.98); opacity: 0.7; }
+    }
+
+    #loginScreen {
+      min-height: 100dvh;
+      background: linear-gradient(135deg, #020617, #0f172a, #1e293b);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 18px;
+    }
+
+    .login-box {
+      width: 100%;
+      max-width: 420px;
+      background: rgba(15, 23, 42, 0.92);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 26px;
+      padding: 26px 20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.28);
+      color: white;
+    }
+
+    .login-logo {
+      width: 110px;
+      margin: 0 auto 16px;
+    }
+
+    .login-title {
+      text-align: center;
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .login-sub {
+      text-align: center;
+      color: #94a3b8;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .field {
+      margin-bottom: 14px;
+    }
+
+    .field label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #cbd5e1;
+    }
+
+    .input, .select {
+      width: 100%;
+      border: 1px solid #334155;
+      background: #0f172a;
+      color: white;
+      border-radius: 14px;
+      padding: 14px 14px;
+      outline: none;
+      font-size: 15px;
+    }
+
+    .input::placeholder {
+      color: #64748b;
+    }
+
+    .btn {
+      width: 100%;
+      border: none;
+      border-radius: 16px;
+      padding: 15px 16px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .btn:active {
+      transform: scale(0.99);
+    }
+
+    .btn-primary {
+      background: linear-gradient(90deg, var(--primary-2), var(--primary));
+      color: white;
+      box-shadow: 0 10px 20px rgba(37, 99, 235, 0.22);
+    }
+
+    .login-hint {
+      margin-top: 16px;
+      text-align: center;
+      color: #94a3b8;
+      font-size: 12px;
+    }
+
+    #app {
+      min-height: 100dvh;
+      background: #f8fafc;
+      padding-bottom: calc(86px + var(--bottom-safe));
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: linear-gradient(180deg, #0f172a, #162033);
+      color: white;
+      padding: 14px 16px 14px;
+      box-shadow: 0 4px 20px rgba(2, 6, 23, 0.22);
+    }
+
+    .topbar-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand-logo {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      object-fit: contain;
+      background: rgba(255,255,255,0.06);
+      padding: 6px;
+    }
+
+    .brand-text {
+      min-width: 0;
+    }
+
+    .brand-text h1 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 800;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .brand-text p {
+      margin: 2px 0 0;
+      font-size: 12px;
+      color: #93c5fd;
+    }
+
+    .refresh-mini {
+      border: none;
+      background: rgba(255,255,255,0.10);
+      color: white;
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .status-bar {
+      margin-top: 10px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 9px 12px;
+      font-size: 12px;
+      color: #cbd5e1;
+    }
+
+    .content {
+      padding: 16px;
+    }
+
+    .screen {
+      display: none;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    .page-head {
+      margin-bottom: 16px;
+    }
+
+    .page-head h2 {
+      margin: 0 0 5px;
+      font-size: 24px;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .page-head p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .card-kpi {
+      background: linear-gradient(135deg, #ffffff, #f8fbff);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 16px;
+      box-shadow: var(--shadow);
+      min-height: 118px;
+    }
+
+    .card-kpi .kpi-label {
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .card-kpi .kpi-value {
+      font-size: 30px;
+      font-weight: 900;
+      color: #0f172a;
+      line-height: 1;
+    }
+
+    .panel {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .panel h3 {
+      margin: 0 0 12px;
+      font-size: 17px;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .info-line {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .list-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .item-card {
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 14px;
+    }
+
+    .item-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: flex-start;
+      margin-bottom: 8px;
+    }
+
+    .item-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: #0f172a;
+      line-height: 1.2;
+    }
+
+    .item-code {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .item-grid {
+      display: grid;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .meta {
+      font-size: 13px;
+      color: #334155;
+      line-height: 1.45;
+    }
+
+    .meta strong {
+      color: #0f172a;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 28px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .badge-success {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .badge-warning {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .badge-danger {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+
+    .badge-neutral {
+      background: #e2e8f0;
+      color: #334155;
+    }
+
+    .quick-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .quick-btn {
+      background: linear-gradient(135deg, #eff6ff, #dbeafe);
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+      border-radius: 18px;
+      padding: 16px;
+      font-weight: 800;
+      text-align: left;
+      min-height: 82px;
+    }
+
+    .quick-btn small {
+      display: block;
+      margin-top: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #1e40af;
+      opacity: 0.9;
+    }
+
+    .form-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .seg-wrap {
+      display: flex;
+      gap: 10px;
+    }
+
+    .seg-btn {
+      flex: 1;
+      border: 1px solid #cbd5e1;
+      background: #f8fafc;
+      color: #334155;
+      border-radius: 14px;
+      padding: 14px;
+      font-weight: 800;
+    }
+
+    .seg-btn.active {
+      background: linear-gradient(90deg, var(--primary-2), var(--primary));
+      color: white;
+      border-color: transparent;
+    }
+
+    .helper {
+      margin-top: 10px;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .result-box {
+      margin-top: 14px;
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px;
+      font-size: 14px;
+      color: #334155;
+      line-height: 1.6;
+      word-break: break-word;
+    }
+
+    .result-box a {
+      color: var(--primary);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .empty-box {
+      color: var(--muted);
+      font-size: 14px;
+      text-align: center;
+      padding: 16px 8px;
+    }
+
+    .search-box {
+      margin-bottom: 12px;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 60;
+      background: rgba(255,255,255,0.97);
+      backdrop-filter: blur(14px);
+      border-top: 1px solid #dbe2ea;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      padding: 10px 8px calc(10px + var(--bottom-safe));
+      gap: 6px;
+    }
+
+    .nav-btn {
+      border: none;
+      background: transparent;
+      color: #64748b;
+      font-size: 11px;
+      font-weight: 800;
+      border-radius: 16px;
+      padding: 10px 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .nav-btn.active {
+      background: #dbeafe;
+      color: #1d4ed8;
+    }
+
+    .nav-icon {
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .logout-btn {
+      margin-top: 10px;
+      width: 100%;
+      border: none;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.08);
+      color: #e2e8f0;
+      padding: 12px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: calc(100px + var(--bottom-safe));
+      background: #0f172a;
+      color: white;
+      padding: 12px 16px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      z-index: 9999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(-4px);
+    }
+
+    @media (min-width: 700px) {
+      .content {
+        max-width: 720px;
+        margin: 0 auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="splash">
+    <div class="splash-logo-wrap">
+      <img src="logo.png" alt="GN Systems">
+    </div>
+    <div class="splash-title">Carregando sistema mobile</div>
+  </div>
+
+  <section id="loginScreen">
+    <div class="login-box">
+      <img src="logo.png" alt="GN Systems" class="login-logo">
+      <div class="login-title">GN Systems</div>
+      <div class="login-sub">Versão mobile conectada ao seu sistema</div>
+
+      <div class="field">
+        <label>Usuário</label>
+        <input class="input" id="loginUser" type="text" placeholder="Digite seu usuário">
+      </div>
+
+      <div class="field">
+        <label>Senha</label>
+        <input class="input" id="loginPass" type="password" placeholder="Digite sua senha">
+      </div>
+
+      <button class="btn btn-primary" onclick="login()">Entrar</button>
+
+      <div class="login-hint">
+        Use o mesmo acesso que você definiu para seu sistema.
+      </div>
+    </div>
+  </section>
+
+  <section id="app" class="hidden">
+    <header class="topbar">
+      <div class="topbar-row">
+        <div class="brand-group">
+          <img src="logo_cliente.png" alt="PV Refrigeração" class="brand-logo">
+          <div class="brand-text">
+            <h1>PV Refrigeração</h1>
+            <p>Sistema de Manutenção Mobile</p>
+          </div>
+        </div>
+
+        <button class="refresh-mini" onclick="recarregarSistema()">Atualizar</button>
+      </div>
+
+      <div class="status-bar" id="statusConexao">Conectando ao sistema...</div>
+      <button class="logout-btn" onclick="logout()">Sair</button>
+    </header>
+
+    <main class="content">
+      <section id="screen-dashboard" class="screen active">
+        <div class="page-head">
+          <h2>Dashboard</h2>
+          <p>Resumo geral do sistema em tempo real.</p>
+        </div>
+
+        <div class="cards-grid">
+          <div class="card-kpi">
+            <div class="kpi-label">Equipamentos</div>
+            <div class="kpi-value" id="kpiEquip">0</div>
+          </div>
+
+          <div class="card-kpi">
+            <div class="kpi-label">Próximas</div>
+            <div class="kpi-value" id="kpiProx">0</div>
+          </div>
+
+          <div class="card-kpi">
+            <div class="kpi-label">Concluídas</div>
+            <div class="kpi-value" id="kpiConc">0</div>
+          </div>
+
+          <div class="card-kpi">
+            <div class="kpi-label">Atrasadas</div>
+            <div class="kpi-value" id="kpiAtras">0</div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3>Ações rápidas</h3>
+          <div class="quick-grid">
+            <button class="quick-btn" onclick="goTo('cadastro')">
+              Novo equipamento
+              <small>Cadastrar e gerar código</small>
+            </button>
+
+            <button class="quick-btn" onclick="goTo('equipamentos')">
+              Ver equipamentos
+              <small>Lista geral do sistema</small>
+            </button>
+
+            <button class="quick-btn" onclick="goTo('proximas')">
+              Próximas manutenções
+              <small>Agenda e vencimentos</small>
+            </button>
+
+            <button class="quick-btn" onclick="goTo('concluidas')">
+              Manutenções concluídas
+              <small>Histórico recente</small>
+            </button>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3>Resumo operacional</h3>
+          <div class="info-line" id="dashboardResumo">Carregando dados...</div>
+        </div>
+
+        <div class="panel">
+          <h3>Próximas manutenções</h3>
+          <div id="dashboardProximas"></div>
+        </div>
+      </section>
+
+      <section id="screen-equipamentos" class="screen">
+        <div class="page-head">
+          <h2>Equipamentos</h2>
+          <p>Consulta completa dos equipamentos cadastrados.</p>
+        </div>
+
+        <div class="search-box">
+          <input class="input" id="buscaEquipamentos" type="text" placeholder="Buscar por código, cliente, equipamento ou local" oninput="renderEquipamentos()">
+        </div>
+
+        <div class="panel">
+          <h3>Lista de equipamentos</h3>
+          <div id="equipamentosBox"></div>
+        </div>
+      </section>
+
+      <section id="screen-cadastro" class="screen">
+        <div class="page-head">
+          <h2>Novo equipamento</h2>
+          <p>Cadastro rápido mobile conectado à planilha.</p>
+        </div>
+
+        <div class="panel">
+          <h3>Cadastro</h3>
+
+          <div class="form-grid">
+            <div class="field">
+              <label>Cliente</label>
+              <input class="input" id="eqCliente" type="text" placeholder="Nome do cliente">
+            </div>
+
+            <div class="field">
+              <label>Equipamento</label>
+              <input class="input" id="eqEquipamento" type="text" placeholder="Nome do equipamento">
+            </div>
+
+            <div class="field">
+              <label>Local</label>
+              <input class="input" id="eqLocal" type="text" placeholder="Local do equipamento">
+            </div>
+
+            <div class="field">
+              <label>Responsável</label>
+              <input class="input" id="eqResponsavel" type="text" placeholder="Responsável">
+            </div>
+
+            <div class="field">
+              <label>Telefone</label>
+              <input class="input" id="eqTelefone" type="text" placeholder="Telefone">
+            </div>
+
+            <div class="field">
+              <label>Endereço</label>
+              <input class="input" id="eqEndereco" type="text" placeholder="Endereço">
+            </div>
+
+            <div class="field">
+              <label>Recorrente</label>
+              <div class="seg-wrap">
+                <button type="button" class="seg-btn" id="btnRecSim" onclick="setRecorrencia('SIM')">SIM</button>
+                <button type="button" class="seg-btn active" id="btnRecNao" onclick="setRecorrencia('NAO')">NÃO</button>
+              </div>
+              <input type="hidden" id="eqRecorrente" value="NAO">
+            </div>
+
+            <div class="field">
+              <label>Frequência</label>
+              <select class="select" id="eqFrequencia" disabled>
+                <option value="">Selecione</option>
+                <option value="30">30 dias</option>
+                <option value="60">60 dias</option>
+                <option value="90">90 dias</option>
+                <option value="180">180 dias</option>
+                <option value="365">365 dias</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Próxima manutenção base</label>
+              <input class="input" id="eqProximaManutencaoBase" type="date">
+            </div>
+
+            <div class="field">
+              <label>Status</label>
+              <select class="select" id="eqStatus">
+                <option value="ATIVO" selected>ATIVO</option>
+                <option value="INATIVO">INATIVO</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="helper">
+            Ao salvar, o sistema gera o código, o link do Forms e o QR Code automaticamente.
+          </div>
+
+          <div style="margin-top: 14px;">
+            <button class="btn btn-primary" onclick="salvarEquipamentoFrontend()">Salvar equipamento</button>
+          </div>
+
+          <div id="resultadoCadastroEquipamento" class="result-box hidden"></div>
+        </div>
+      </section>
+
+      <section id="screen-proximas" class="screen">
+        <div class="page-head">
+          <h2>Próximas</h2>
+          <p>Agenda de manutenção e vencimentos.</p>
+        </div>
+
+        <div class="search-box">
+          <input class="input" id="buscaProximas" type="text" placeholder="Buscar próxima manutenção" oninput="renderProximas()">
+        </div>
+
+        <div class="panel">
+          <h3>Próximas manutenções</h3>
+          <div id="proximasBox"></div>
+        </div>
+      </section>
+
+      <section id="screen-concluidas" class="screen">
+        <div class="page-head">
+          <h2>Concluídas</h2>
+          <p>Histórico de manutenções concluídas.</p>
+        </div>
+
+        <div class="search-box">
+          <input class="input" id="buscaConcluidas" type="text" placeholder="Buscar concluídas" oninput="renderConcluidas()">
+        </div>
+
+        <div class="panel">
+          <h3>Concluídas</h3>
+          <div id="concluidasBox"></div>
+        </div>
+      </section>
+
+      <section id="screen-reagendadas" class="screen">
+        <div class="page-head">
+          <h2>Reagendadas</h2>
+          <p>Manutenções que foram movidas para nova data.</p>
+        </div>
+
+        <div class="search-box">
+          <input class="input" id="buscaReagendadas" type="text" placeholder="Buscar reagendadas" oninput="renderReagendadas()">
+        </div>
+
+        <div class="panel">
+          <h3>Reagendadas</h3>
+          <div id="reagendadasBox"></div>
+        </div>
+      </section>
+
+<section id="screen-relatorio" class="screen">
+  <div class="page-head">
+    <h2>Relatório</h2>
+    <p>Gere relatórios por período e acompanhe concluídas e reagendadas.</p>
+  </div>
+
+  <div class="panel">
+    <h3>Filtro do relatório</h3>
+
+    <div class="form-grid">
+      <div class="field">
+        <label>Data inicial</label>
+        <input class="input" id="relatorioDataInicial" type="date">
+      </div>
+
+      <div class="field">
+        <label>Data final</label>
+        <input class="input" id="relatorioDataFinal" type="date">
+      </div>
+    </div>
+
+    <div class="quick-grid" style="margin-top: 12px;">
+      <button class="quick-btn" onclick="preencherUltimos30Dias()">
+        Últimos 30 dias
+        <small>Preencher período automático</small>
+      </button>
+
+      <button class="quick-btn" onclick="gerarRelatorioPeriodo()">
+        Gerar relatório
+        <small>Buscar dados do período</small>
+      </button>
+    </div>
+
+    <div style="margin-top: 12px;">
+      <button class="btn btn-primary" onclick="baixarPDF()">
+        Baixar relatório em PDF
+      </button>
+    </div>
+
+    <div class="helper">
+      Você pode selecionar qualquer intervalo de datas. Se deixar como padrão, o sistema usa os últimos 30 dias.
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>Resultado do relatório</h3>
+    <div id="relatorioBox"></div>
+  </div>
+</section>
+    </main>
+
+    <nav class="bottom-nav">
+      <button class="nav-btn active" data-screen="dashboard" onclick="goTo('dashboard', this)">
+        <span class="nav-icon">🏠</span>
+        <span>Home</span>
+      </button>
+
+      <button class="nav-btn" data-screen="equipamentos" onclick="goTo('equipamentos', this)">
+        <span class="nav-icon">📦</span>
+        <span>Itens</span>
+      </button>
+
+      <button class="nav-btn" data-screen="cadastro" onclick="goTo('cadastro', this)">
+        <span class="nav-icon">➕</span>
+        <span>Novo</span>
+      </button>
+
+      <button class="nav-btn" data-screen="proximas" onclick="goTo('proximas', this)">
+        <span class="nav-icon">📅</span>
+        <span>Agenda</span>
+      </button>
+
+      <button class="nav-btn" data-screen="relatorio" onclick="goTo('relatorio', this)">
+        <span class="nav-icon">📊</span>
+        <span>Relatório</span>
+      </button>
+    </nav>
+  </section>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const API_URL = "https://script.google.com/macros/s/AKfycbwGfCWxFeqpim3Rx5UgEWZ5HvP6Hg-eP6oC05WyvvW1Vp2qhkKnQ1vz8K2N7kDT6ge5/exec";
+
+    let sistema = null;
+    let currentScreen = "dashboard";
+
+    setTimeout(() => {
+      document.getElementById("splash").classList.add("hide");
+    }, 1800);
+
+   async function login() {
+  const user = document.getElementById("loginUser").value.trim();
+  const pass = document.getElementById("loginPass").value.trim();
+
+  if (!user || !pass) {
+    toast("Preencha usuário e senha");
+    return;
+  }
+
+  try {
+    const res = await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8"
+      },
+      body: JSON.stringify({
+        action: "login",
+        usuario: user,
+        senha: pass
+      })
+    });
+
+    const json = await res.json();
+
+    if (!json.ok) {
+      throw new Error(json.error || "Login inválido");
+    }
+
+    document.getElementById("loginScreen").classList.add("hidden");
+    document.getElementById("app").classList.remove("hidden");
+    toast("Login realizado com sucesso");
+    recarregarSistema();
+
+  } catch (err) {
+    toast(err.message || "Erro no login");
+  }
+}  
+
+    function logout() {
+      document.getElementById("app").classList.add("hidden");
+      document.getElementById("loginScreen").classList.remove("hidden");
+      document.getElementById("loginUser").value = "";
+      document.getElementById("loginPass").value = "";
+      toast("Você saiu do sistema");
+    }
+
+    function goTo(screen, el) {
+      currentScreen = screen;
+
+      document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+      const target = document.getElementById("screen-" + screen);
+      if (target) target.classList.add("active");
+
+      document.querySelectorAll(".nav-btn").forEach(btn => btn.classList.remove("active"));
+      const navMatch = document.querySelector('.nav-btn[data-screen="' + screen + '"]');
+      if (navMatch) navMatch.classList.add("active");
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    async function recarregarSistema() {
+      try {
+        setStatus("Atualizando dados do sistema...");
+
+        const res = await fetch(API_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "text/plain;charset=utf-8"
+          },
+          body: JSON.stringify({
+            action: "getSistemaData"
+          })
+        });
+
+        const json = await res.json();
+
+        if (!json.ok) throw new Error(json.error || "Falha ao carregar dados.");
+
+        sistema = json.data || {};
+        renderAll();
+        setStatus("Sistema online e conectado à planilha");
+      } catch (err) {
+        setStatus("Erro ao conectar com o sistema");
+        toast(err.message || "Erro ao carregar");
+      }
+    }
+
+    function renderAll() {
+      renderDashboard();
+      renderEquipamentos();
+      renderProximas();
+      renderConcluidas();
+      renderReagendadas();
+      renderRelatorio();
+    }
+
+    function renderDashboard() {
+      const dash = sistema?.dashboard || {};
+      const equipamentos = sistema?.equipamentos || [];
+      const proximas = sistema?.proximas || [];
+      const concluidas = sistema?.concluidas || [];
+      const reagendadas = sistema?.reagendadas || [];
+
+      setText("kpiEquip", numberOrZero(equipamentos.length));
+      setText("kpiProx", numberOrZero(dash.proximas));
+      setText("kpiConc", numberOrZero(dash.concluidas));
+      setText("kpiAtras", numberOrZero(dash.atrasadas));
+
+      const ativos = equipamentos.filter(x => normalizar(pegar(x, ["STATUS"])) === "ATIVO").length;
+      const recorrentes = equipamentos.filter(x => normalizar(pegar(x, ["RECORRENTE"])) === "SIM").length;
+
+      document.getElementById("dashboardResumo").innerHTML =
+        "Equipamentos cadastrados: <strong>" + esc(numberOrZero(equipamentos.length)) + "</strong><br>" +
+        "Equipamentos ativos: <strong>" + esc(ativos) + "</strong><br>" +
+        "Equipamentos recorrentes: <strong>" + esc(recorrentes) + "</strong><br>" +
+        "Próximas manutenções: <strong>" + esc(numberOrZero(proximas.length)) + "</strong><br>" +
+        "Concluídas: <strong>" + esc(numberOrZero(concluidas.length)) + "</strong><br>" +
+        "Reagendadas: <strong>" + esc(numberOrZero(reagendadas.length)) + "</strong>";
+
+      document.getElementById("dashboardProximas").innerHTML = montarListaCards(
+        proximas.slice(0, 6),
+        "proximas"
+      );
+    }
+
+    function renderEquipamentos() {
+      const dados = sistema?.equipamentos || [];
+      const termo = document.getElementById("buscaEquipamentos").value.trim().toLowerCase();
+
+      const filtrados = dados.filter(item => {
+        if (!termo) return true;
+        return [
+          pegar(item, ["CODIGO"]),
+          pegar(item, ["CLIENTE"]),
+          pegar(item, ["EQUIPAMENTO"]),
+          pegar(item, ["LOCAL"])
+        ].join(" ").toLowerCase().includes(termo);
+      });
+
+      document.getElementById("equipamentosBox").innerHTML = montarListaCards(filtrados, "equipamentos");
+    }
+
+    function renderProximas() {
+      const dados = sistema?.proximas || [];
+      const termo = document.getElementById("buscaProximas").value.trim().toLowerCase();
+
+      const filtrados = dados.filter(item => {
+        if (!termo) return true;
+        return [
+          pegar(item, ["CODIGO"]),
+          pegar(item, ["CLIENTE"]),
+          pegar(item, ["EQUIPAMENTO"]),
+          pegar(item, ["LOCAL"]),
+          pegar(item, ["SITUACAO"])
+        ].join(" ").toLowerCase().includes(termo);
+      });
+
+      document.getElementById("proximasBox").innerHTML = montarListaCards(filtrados, "proximas");
+    }
+
+    function renderConcluidas() {
+      const dados = sistema?.concluidas || [];
+      const termo = document.getElementById("buscaConcluidas").value.trim().toLowerCase();
+
+      const filtrados = dados.filter(item => {
+        if (!termo) return true;
+        return [
+          pegar(item, ["CODIGO"]),
+          pegar(item, ["CLIENTE"]),
+          pegar(item, ["EQUIPAMENTO"]),
+          pegar(item, ["LOCAL"]),
+          pegar(item, ["SERVICO_REALIZADO"]),
+          pegar(item, ["OBSERVACAO"])
+        ].join(" ").toLowerCase().includes(termo);
+      });
+
+      document.getElementById("concluidasBox").innerHTML = montarListaCards(filtrados, "concluidas");
+    }
+
+    function renderReagendadas() {
+      const dados = sistema?.reagendadas || [];
+      const termo = document.getElementById("buscaReagendadas").value.trim().toLowerCase();
+
+      const filtrados = dados.filter(item => {
+        if (!termo) return true;
+        return [
+          pegar(item, ["CODIGO"]),
+          pegar(item, ["CLIENTE"]),
+          pegar(item, ["EQUIPAMENTO"]),
+          pegar(item, ["LOCAL"]),
+          pegar(item, ["OBSERVACAO"])
+        ].join(" ").toLowerCase().includes(termo);
+      });
+
+      document.getElementById("reagendadasBox").innerHTML = montarListaCards(filtrados, "reagendadas");
+    }
+
+    function renderRelatorio() {
+  preencherUltimos30Dias();
+  const dados = sistema?.relatorio || [];
+  if (dados && dados.length) {
+    document.getElementById("relatorioBox").innerHTML = montarListaCards(dados, "relatorio");
+  } else {
+    document.getElementById("relatorioBox").innerHTML = '<div class="empty-box">Selecione um período e toque em gerar relatório.</div>';
+  }
+}
+
+function preencherUltimos30Dias() {
+  const hoje = new Date();
+  const inicio = new Date();
+  inicio.setDate(hoje.getDate() - 30);
+
+  document.getElementById("relatorioDataInicial").value = dateToInputValue(inicio);
+  document.getElementById("relatorioDataFinal").value = dateToInputValue(hoje);
+}
+
+async function gerarRelatorioPeriodo() {
+  const dataInicial = document.getElementById("relatorioDataInicial").value;
+  const dataFinal = document.getElementById("relatorioDataFinal").value;
+
+  if (!dataInicial || !dataFinal) {
+    toast("Informe a data inicial e final");
+    return;
+  }
+
+  if (dataInicial > dataFinal) {
+    toast("A data inicial não pode ser maior");
+    return;
+  }
+
+  const box = document.getElementById("relatorioBox");
+  box.innerHTML = '<div class="empty-box">Gerando relatório...</div>';
+
+  try {
+    const res = await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8"
+      },
+      body: JSON.stringify({
+        action: "getRelatorioPorPeriodo",
+        dataInicial,
+        dataFinal
+      })
+    });
+
+    const json = await res.json();
+    if (!json.ok) throw new Error(json.error || "Falha ao gerar relatório.");
+
+    box.innerHTML = montarRelatorioPeriodo(json.data || {});
+  } catch (err) {
+    box.innerHTML = '<div class="empty-box">Erro ao gerar relatório.</div>';
+    toast(err.message || "Erro ao gerar relatório");
+  }
+}
+
+function montarRelatorioPeriodo(relatorio) {
+  const periodo = relatorio?.periodo || {};
+  const totais = relatorio?.totais || {};
+  const concluidas = relatorio?.concluidas || [];
+  const reagendadas = relatorio?.reagendadas || [];
+
+  let html = '<div class="list-stack">';
+
+  html += `
+    <div class="item-card">
+      <div class="item-top">
+        <div>
+          <div class="item-title">Resumo do período</div>
+          <div class="item-code">${esc(formatarValor(periodo.dataInicial) || "-")} até ${esc(formatarValor(periodo.dataFinal) || "-")}</div>
+        </div>
+        <span class="badge badge-neutral">RELATÓRIO</span>
+      </div>
+
+      <div class="item-grid">
+        <div class="meta"><strong>Total geral:</strong> ${esc(numberOrZero(totais.geral))}</div>
+        <div class="meta"><strong>Concluídas:</strong> ${esc(numberOrZero(totais.concluidas))}</div>
+        <div class="meta"><strong>Reagendadas:</strong> ${esc(numberOrZero(totais.reagendadas))}</div>
+      </div>
+    </div>
+  `;
+
+  html += `
+    <div class="item-card">
+      <div class="item-top">
+        <div>
+          <div class="item-title">Manutenções concluídas</div>
+          <div class="item-code">${esc(numberOrZero(concluidas.length))} registro(s)</div>
+        </div>
+        <span class="badge badge-success">CONCLUÍDAS</span>
+      </div>
+      ${concluidas.length ? montarListaCards(concluidas, "concluidas") : '<div class="empty-box">Nenhuma concluída neste período.</div>'}
+    </div>
+  `;
+
+  html += `
+    <div class="item-card">
+      <div class="item-top">
+        <div>
+          <div class="item-title">Manutenções reagendadas</div>
+          <div class="item-code">${esc(numberOrZero(reagendadas.length))} registro(s)</div>
+        </div>
+        <span class="badge badge-warning">REAGENDADAS</span>
+      </div>
+      ${reagendadas.length ? montarListaCards(reagendadas, "reagendadas") : '<div class="empty-box">Nenhuma reagendada neste período.</div>'}
+    </div>
+  `;
+
+  html += '</div>';
+  return html;
+}
+
+
+function baixarPDF() {
+  const area = document.getElementById("relatorioBox");
+  const dataInicial = document.getElementById("relatorioDataInicial")?.value || "";
+  const dataFinal = document.getElementById("relatorioDataFinal")?.value || "";
+
+  if (!area || !area.innerHTML || area.innerHTML.includes("Selecione um período")) {
+    toast("Gere o relatório antes de baixar");
+    return;
+  }
+
+  const janela = window.open("", "_blank", "width=900,height=700");
+
+  if (!janela) {
+    toast("Permita pop-up para baixar o PDF");
+    return;
+  }
+
+  janela.document.write(`
+    <html lang="pt-BR">
+      <head>
+        <meta charset="UTF-8">
+        <title>Relatório de Manutenção</title>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            padding: 24px;
+            color: #0f172a;
+          }
+          .topo {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 22px;
+            border-bottom: 2px solid #cbd5e1;
+            padding-bottom: 14px;
+          }
+          .topo img {
+            height: 56px;
+            max-width: 160px;
+            object-fit: contain;
+          }
+          h1 {
+            margin: 0 0 4px;
+            font-size: 24px;
+          }
+          .sub {
+            color: #475569;
+            font-size: 14px;
+          }
+          .item-card {
+            border: 1px solid #cbd5e1;
+            border-radius: 14px;
+            padding: 14px;
+            margin-bottom: 12px;
+            page-break-inside: avoid;
+          }
+          .item-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 8px;
+          }
+          .item-title {
+            font-size: 16px;
+            font-weight: bold;
+          }
+          .item-code {
+            font-size: 12px;
+            color: #475569;
+            margin-top: 4px;
+          }
+          .item-grid {
+            display: grid;
+            gap: 6px;
+            margin-top: 8px;
+          }
+          .meta {
+            font-size: 13px;
+            line-height: 1.45;
+          }
+          .badge {
+            border: 1px solid #cbd5e1;
+            border-radius: 999px;
+            padding: 4px 8px;
+            font-size: 11px;
+            font-weight: bold;
+            white-space: nowrap;
+          }
+          .list-stack {
+            display: block;
+          }
+          .empty-box {
+            color: #64748b;
+            padding: 12px 0;
+          }
+          @media print {
+            body {
+              padding: 12px;
+            }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="topo">
+          <img src="logo_cliente.png" alt="PV Refrigeração">
+          <div>
+            <h1>PV Refrigeração</h1>
+            <div class="sub">Sistema de Manutenção Mobile</div>
+            <div class="sub">Relatório de manutenção | ${dataInicial || "-"} até ${dataFinal || "-"}</div>
+          </div>
+        </div>
+        ${area.innerHTML}
+      </body>
+    </html>
+  `);
+
+  janela.document.close();
+  janela.focus();
+  setTimeout(() => {
+    janela.print();
+  }, 500);
+}
+
+    function montarListaCards(dados, tipo) {
+      if (!dados || !dados.length) {
+        return '<div class="empty-box">Nenhum dado encontrado.</div>';
+      }
+
+      let html = '<div class="list-stack">';
+
+      dados.forEach(item => {
+        if (tipo === "equipamentos") {
+          html += `
+            <div class="item-card">
+              <div class="item-top">
+                <div>
+                  <div class="item-title">${esc(pegar(item, ["EQUIPAMENTO"]) || "Equipamento")}</div>
+                  <div class="item-code">${esc(pegar(item, ["CODIGO"]) || "")}</div>
+                </div>
+                ${badgeStatus(pegar(item, ["STATUS"]))}
+              </div>
+
+              <div class="item-grid">
+                <div class="meta"><strong>Cliente:</strong> ${esc(pegar(item, ["CLIENTE"]) || "-")}</div>
+                <div class="meta"><strong>Local:</strong> ${esc(pegar(item, ["LOCAL"]) || "-")}</div>
+                <div class="meta"><strong>Responsável:</strong> ${esc(pegar(item, ["RESPONSAVEL"]) || "-")}</div>
+                <div class="meta"><strong>Telefone:</strong> ${esc(pegar(item, ["TELEFONE"]) || "-")}</div>
+                <div class="meta"><strong>Recorrente:</strong> ${esc(pegar(item, ["RECORRENTE"]) || "-")}</div>
+                <div class="meta"><strong>Frequência:</strong> ${esc(pegar(item, ["FREQUENCIA"]) || "-")}</div>
+                <div class="meta"><strong>Próxima base:</strong> ${esc(formatarValor(pegar(item, ["PROXIMA_MANUTENCAO_BASE"])) || "-")}</div>
+              </div>
+            </div>
+          `;
+        }
+
+        if (tipo === "proximas") {
+          html += `
+            <div class="item-card">
+              <div class="item-top">
+                <div>
+                  <div class="item-title">${esc(pegar(item, ["EQUIPAMENTO"]) || "Manutenção")}</div>
+                  <div class="item-code">${esc(pegar(item, ["CODIGO"]) || "")}</div>
+                </div>
+                ${badgeSituacao(pegar(item, ["SITUACAO"]))}
+              </div>
+
+              <div class="item-grid">
+                <div class="meta"><strong>Cliente:</strong> ${esc(pegar(item, ["CLIENTE"]) || "-")}</div>
+                <div class="meta"><strong>Local:</strong> ${esc(pegar(item, ["LOCAL"]) || "-")}</div>
+                <div class="meta"><strong>Data:</strong> ${esc(formatarValor(pegar(item, ["PROXIMA_DATA", "PROXIMA_MANUTENCAO_BASE"])) || "-")}</div>
+                <div class="meta"><strong>Dias restantes:</strong> ${esc(pegar(item, ["DIAS_RESTANTES"]) || "0")}</div>
+              </div>
+            </div>
+          `;
+        }
+
+        if (tipo === "concluidas") {
+          html += `
+            <div class="item-card">
+              <div class="item-top">
+                <div>
+                  <div class="item-title">${esc(pegar(item, ["EQUIPAMENTO"]) || "Concluída")}</div>
+                  <div class="item-code">${esc(pegar(item, ["CODIGO"]) || "")}</div>
+                </div>
+                <span class="badge badge-success">CONCLUÍDA</span>
+              </div>
+
+              <div class="item-grid">
+                <div class="meta"><strong>Cliente:</strong> ${esc(pegar(item, ["CLIENTE"]) || "-")}</div>
+                <div class="meta"><strong>Local:</strong> ${esc(pegar(item, ["LOCAL"]) || "-")}</div>
+                <div class="meta"><strong>Data:</strong> ${esc(formatarValor(pegar(item, ["DATA_MANUTENCAO"])) || "-")}</div>
+                <div class="meta"><strong>Serviço:</strong> ${esc(pegar(item, ["SERVICO_REALIZADO"]) || "-")}</div>
+                <div class="meta"><strong>Observação:</strong> ${esc(pegar(item, ["OBSERVACAO"]) || "-")}</div>
+                <div class="meta"><strong>Próxima manutenção:</strong> ${esc(formatarValor(pegar(item, ["PROXIMA_MANUTENCAO"])) || "-")}</div>
+              </div>
+            </div>
+          `;
+        }
+
+        if (tipo === "reagendadas") {
+          html += `
+            <div class="item-card">
+              <div class="item-top">
+                <div>
+                  <div class="item-title">${esc(pegar(item, ["EQUIPAMENTO"]) || "Reagendada")}</div>
+                  <div class="item-code">${esc(pegar(item, ["CODIGO"]) || "")}</div>
+                </div>
+                <span class="badge badge-warning">REAGENDADA</span>
+              </div>
+
+              <div class="item-grid">
+                <div class="meta"><strong>Cliente:</strong> ${esc(pegar(item, ["CLIENTE"]) || "-")}</div>
+                <div class="meta"><strong>Local:</strong> ${esc(pegar(item, ["LOCAL"]) || "-")}</div>
+                <div class="meta"><strong>Data anterior:</strong> ${esc(formatarValor(pegar(item, ["DATA_MANUTENCAO"])) || "-")}</div>
+                <div class="meta"><strong>Nova data:</strong> ${esc(formatarValor(pegar(item, ["NOVA_DATA_REAGENDADA"])) || "-")}</div>
+                <div class="meta"><strong>Observação:</strong> ${esc(pegar(item, ["OBSERVACAO"]) || "-")}</div>
+              </div>
+            </div>
+          `;
+        }
+
+        if (tipo === "relatorio") {
+          html += `
+            <div class="item-card">
+              <div class="item-top">
+                <div>
+                  <div class="item-title">Resumo do período</div>
+                  <div class="item-code">Últimos 30 dias</div>
+                </div>
+                <span class="badge badge-neutral">RELATÓRIO</span>
+              </div>
+
+              <div class="item-grid">
+                <div class="meta"><strong>Data inicial:</strong> ${esc(formatarValor(pegar(item, ["DATA_INICIAL"])) || "-")}</div>
+                <div class="meta"><strong>Data final:</strong> ${esc(formatarValor(pegar(item, ["DATA_FINAL"])) || "-")}</div>
+                <div class="meta"><strong>Total concluídas:</strong> ${esc(pegar(item, ["TOTAL_CONCLUIDAS"]) || "0")}</div>
+                <div class="meta"><strong>Total reagendadas:</strong> ${esc(pegar(item, ["TOTAL_REAGENDADAS"]) || "0")}</div>
+              </div>
+            </div>
+          `;
+        }
+      });
+
+      html += "</div>";
+      return html;
+    }
+
+    function badgeStatus(status) {
+      const s = normalizar(status);
+      if (s === "ATIVO") return '<span class="badge badge-success">ATIVO</span>';
+      if (s === "INATIVO") return '<span class="badge badge-neutral">INATIVO</span>';
+      return '<span class="badge badge-neutral">' + esc(status || "-") + '</span>';
+    }
+
+    function badgeSituacao(situacao) {
+      const s = normalizar(situacao);
+      if (s === "ATRASADA") return '<span class="badge badge-danger">ATRASADA</span>';
+      if (s === "HOJE") return '<span class="badge badge-warning">HOJE</span>';
+      if (s === "EM_10_DIAS") return '<span class="badge badge-warning">EM 10 DIAS</span>';
+      return '<span class="badge badge-success">' + esc(situacao || "FUTURA") + '</span>';
+    }
+
+    function setRecorrencia(valor) {
+      document.getElementById("eqRecorrente").value = valor;
+
+      document.getElementById("btnRecSim").classList.remove("active");
+      document.getElementById("btnRecNao").classList.remove("active");
+
+      if (valor === "SIM") {
+        document.getElementById("btnRecSim").classList.add("active");
+        document.getElementById("eqFrequencia").disabled = false;
+      } else {
+        document.getElementById("btnRecNao").classList.add("active");
+        document.getElementById("eqFrequencia").value = "";
+        document.getElementById("eqFrequencia").disabled = true;
+      }
+    }
+
+    async function salvarEquipamentoFrontend() {
+      const payload = {
+        cliente: document.getElementById("eqCliente").value.trim(),
+        equipamento: document.getElementById("eqEquipamento").value.trim(),
+        local: document.getElementById("eqLocal").value.trim(),
+        responsavel: document.getElementById("eqResponsavel").value.trim(),
+        telefone: document.getElementById("eqTelefone").value.trim(),
+        endereco: document.getElementById("eqEndereco").value.trim(),
+        recorrente: document.getElementById("eqRecorrente").value.trim() || "NAO",
+        frequencia: document.getElementById("eqFrequencia").value.trim(),
+        proximaManutencaoBase: document.getElementById("eqProximaManutencaoBase").value,
+        status: document.getElementById("eqStatus").value.trim() || "ATIVO"
+      };
+
+      if (!payload.cliente || !payload.equipamento || !payload.local) {
+        toast("Preencha Cliente, Equipamento e Local");
+        return;
+      }
+
+      if (payload.recorrente === "SIM" && !payload.frequencia) {
+        toast("Selecione a frequência");
+        return;
+      }
+
+      const box = document.getElementById("resultadoCadastroEquipamento");
+      box.classList.remove("hidden");
+      box.innerHTML = "Salvando equipamento...";
+
+      try {
+        const res = await fetch(API_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "text/plain;charset=utf-8"
+          },
+          body: JSON.stringify({
+            action: "salvarEquipamento",
+            payload
+          })
+        });
+
+        const json = await res.json();
+
+        if (!json.ok) throw new Error(json.error || "Erro ao salvar equipamento.");
+
+        box.innerHTML =
+          "Equipamento salvo com sucesso.<br>" +
+          "<strong>Código gerado:</strong> " + esc(json.data?.codigo || "-") + "<br>" +
+          '<strong>Link do Forms:</strong> <a href="' + esc(json.data?.linkForms || "#") + '" target="_blank">Abrir</a><br>' +
+          '<strong>QR Code:</strong> <a href="' + esc(json.data?.qrCode || "#") + '" target="_blank">Abrir</a>';
+
+        limparFormularioEquipamento();
+        toast("Equipamento cadastrado com sucesso");
+        await recarregarSistema();
+      } catch (err) {
+        box.innerHTML = "Erro ao salvar: " + esc(err.message || err);
+        toast("Falha ao salvar equipamento");
+      }
+    }
+
+    function limparFormularioEquipamento() {
+      document.getElementById("eqCliente").value = "";
+      document.getElementById("eqEquipamento").value = "";
+      document.getElementById("eqLocal").value = "";
+      document.getElementById("eqResponsavel").value = "";
+      document.getElementById("eqTelefone").value = "";
+      document.getElementById("eqEndereco").value = "";
+      document.getElementById("eqProximaManutencaoBase").value = "";
+      document.getElementById("eqStatus").value = "ATIVO";
+      setRecorrencia("NAO");
+    }
+
+    function pegar(obj, aliases) {
+      const keys = Object.keys(obj || {});
+      for (const alias of aliases) {
+        const alvo = normalizar(alias);
+        for (const k of keys) {
+          if (normalizar(k) === alvo) return obj[k];
+        }
+      }
+      return "";
+    }
+
+    function normalizar(txt) {
+      return String(txt || "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/\s+/g, "_")
+        .toUpperCase()
+        .trim();
+    }
+
+    function esc(txt) {
+      return String(txt ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function setText(id, value) {
+      document.getElementById(id).textContent = value;
+    }
+
+    function setStatus(texto) {
+      document.getElementById("statusConexao").textContent = texto;
+    }
+
+    function numberOrZero(v) {
+      return Number(v || 0);
+    }
+
+    function formatarValor(valor) {
+      if (!valor) return "";
+
+      const data = valueToDate(valor);
+      if (data) return data.toLocaleDateString("pt-BR");
+
+      return String(valor);
+    }
+
+    function valueToDate(v) {
+      if (Object.prototype.toString.call(v) === "[object Date]" && !isNaN(v.getTime())) {
+        return v;
+      }
+
+      if (typeof v !== "string") return null;
+
+      const t = v.trim();
+      if (!t) return null;
+
+      const isoDate = /^\d{4}-\d{2}-\d{2}$/;
+      const isoDateTime = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/;
+
+      if (!isoDate.test(t) && !isoDateTime.test(t)) return null;
+
+      const d = new Date(t);
+      if (isNaN(d.getTime())) return null;
+      return d;
+    }
+
+function dateToInputValue(data) {
+  const d = valueToDate(data) || new Date(data);
+  if (isNaN(d.getTime())) return "";
+  const ano = d.getFullYear();
+  const mes = String(d.getMonth() + 1).padStart(2, "0");
+  const dia = String(d.getDate()).padStart(2, "0");
+  return ano + "-" + mes + "-" + dia;
+}
+
+    function toast(msg) {
+      const el = document.getElementById("toast");
+      el.textContent = msg;
+      el.classList.add("show");
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(() => {
+        el.classList.remove("show");
+      }, 2200);
+    }
+  </script>
+</body>
+</html>
